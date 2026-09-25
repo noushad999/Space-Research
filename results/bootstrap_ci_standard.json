@@ -1,0 +1,66 @@
+{
+  "direction": "standard",
+  "matrices": [
+    "shortcut_evidence_s1337.json",
+    "shortcut_evidence_s2024.json",
+    "shortcut_evidence_s42.json"
+  ],
+  "collapse_gap_on_wild_test": {
+    "n_samples": 3654,
+    "n_seeds": 3,
+    "gap_pp": 37.411,
+    "ci95_pp": [
+      35.851,
+      39.026
+    ],
+    "effect": {
+      "b_ss_right_in_wrong": 1367,
+      "c_ss_wrong_in_right": 0,
+      "odds_ratio": Infinity,
+      "risk_difference": 0.37411056376573615
+    },
+    "per_seed_gap_pp": [
+      {
+        "file": "shortcut_evidence_s1337.json",
+        "gap_pp": 36.617
+      },
+      {
+        "file": "shortcut_evidence_s2024.json",
+        "gap_pp": 38.424
+      },
+      {
+        "file": "shortcut_evidence_s42.json",
+        "gap_pp": 37.192
+      }
+    ]
+  },
+  "free_gap_on_studio_test": {
+    "n_samples": 1671,
+    "n_seeds": 3,
+    "gap_pp": -0.838,
+    "ci95_pp": [
+      -1.317,
+      -0.419
+    ],
+    "effect": {
+      "b_ss_right_in_wrong": 0,
+      "c_ss_wrong_in_right": 14,
+      "odds_ratio": 0.0,
+      "risk_difference": -0.008378216636744429
+    },
+    "per_seed_gap_pp": [
+      {
+        "file": "shortcut_evidence_s1337.json",
+        "gap_pp": -0.898
+      },
+      {
+        "file": "shortcut_evidence_s2024.json",
+        "gap_pp": -0.718
+      },
+      {
+        "file": "shortcut_evidence_s42.json",
+        "gap_pp": -0.898
+      }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "params_total": 20641313,
+  "params_trainable": 20641313,
+  "flops_g_fusion": 3.008352976,
+  "flops_g_image": 3.005866432,
+  "latency_ms_cpu_fusion": 33.3955854500001,
+  "latency_ms_cpu_image": 33.57441459999997,
+  "latency_ms_gpu_fusion": 9.866191790000016,
+  "latency_ms_gpu_image": 9.154110289999977
+}

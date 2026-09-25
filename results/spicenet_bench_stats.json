@@ -1,0 +1,249 @@
+{
+  "total_classes": 22,
+  "total_train": 15382,
+  "total_val": 3291,
+  "total_test": 3318,
+  "total_images": 21991,
+  "min_class_size": 325,
+  "max_class_size": 1827,
+  "imbalance_ratio": 5.62,
+  "resolutions_sampled_200": {
+    "512x512": 100,
+    "810x1080": 58,
+    "1440x1080": 42
+  },
+  "source_counts": {
+    "indian": 10991,
+    "spice_spectrum": 11000
+  },
+  "per_class": [
+    {
+      "name": "asafoetida",
+      "total": 364,
+      "train": 254,
+      "val": 54,
+      "test": 56,
+      "sources": [
+        "indian:Asafoetida"
+      ]
+    },
+    {
+      "name": "bay_leaf",
+      "total": 1085,
+      "train": 759,
+      "val": 162,
+      "test": 164,
+      "sources": [
+        "indian:Bay Leaf"
+      ]
+    },
+    {
+      "name": "black_cardamom",
+      "total": 345,
+      "train": 241,
+      "val": 51,
+      "test": 53,
+      "sources": [
+        "indian:Black Cardamom"
+      ]
+    },
+    {
+      "name": "black_pepper",
+      "total": 1278,
+      "train": 894,
+      "val": 191,
+      "test": 193,
+      "sources": [
+        "spice_spectrum:black pepper",
+        "indian:Black Pepper"
+      ]
+    },
+    {
+      "name": "caraway",
+      "total": 1110,
+      "train": 777,
+      "val": 166,
+      "test": 167,
+      "sources": [
+        "indian:Caraway seeds"
+      ]
+    },
+    {
+      "name": "cinnamon",
+      "total": 1534,
+      "train": 1073,
+      "val": 230,
+      "test": 231,
+      "sources": [
+        "spice_spectrum:cinnamon",
+        "indian:Cinnamom stick"
+      ]
+    },
+    {
+      "name": "cloves",
+      "total": 1827,
+      "train": 1278,
+      "val": 274,
+      "test": 275,
+      "sources": [
+        "spice_spectrum:cloves",
+        "indian:Cloves"
+      ]
+    },
+    {
+      "name": "coriander",
+      "total": 1330,
+      "train": 930,
+      "val": 199,
+      "test": 201,
+      "sources": [
+        "spice_spectrum:coriander",
+        "indian:Coriander Seeds"
+      ]
+    },
+    {
+      "name": "cubeb_pepper",
+      "total": 325,
+      "train": 227,
+      "val": 48,
+      "test": 50,
+      "sources": [
+        "indian:Cubeb Pepper"
+      ]
+    },
+    {
+      "name": "cumin",
+      "total": 1360,
+      "train": 951,
+      "val": 204,
+      "test": 205,
+      "sources": [
+        "spice_spectrum:cumin",
+        "indian:Cumin seeds"
+      ]
+    },
+    {
+      "name": "dry_red_chilly",
+      "total": 841,
+      "train": 588,
+      "val": 126,
+      "test": 127,
+      "sources": [
+        "indian:Dry red Chilly"
+      ]
+    },
+    {
+      "name": "fennel",
+      "total": 428,
+      "train": 299,
+      "val": 64,
+      "test": 65,
+      "sources": [
+        "indian:Fennel seeds"
+      ]
+    },
+    {
+      "name": "ginger",
+      "total": 1716,
+      "train": 1201,
+      "val": 257,
+      "test": 258,
+      "sources": [
+        "spice_spectrum:ginger",
+        "indian:Dry Ginger"
+      ]
+    },
+    {
+      "name": "green_cardamom",
+      "total": 1401,
+      "train": 980,
+      "val": 210,
+      "test": 211,
+      "sources": [
+        "spice_spectrum:cardamom",
+        "indian:Green Cardamom"
+      ]
+    },
+    {
+      "name": "mace",
+      "total": 854,
+      "train": 597,
+      "val": 128,
+      "test": 129,
+      "sources": [
+        "indian:Mace"
+      ]
+    },
+    {
+      "name": "nutmeg",
+      "total": 1332,
+      "train": 932,
+      "val": 199,
+      "test": 201,
+      "sources": [
+        "spice_spectrum:nutmeg",
+        "indian:Nutmeg"
+      ]
+    },
+    {
+      "name": "paprika",
+      "total": 1000,
+      "train": 700,
+      "val": 150,
+      "test": 150,
+      "sources": [
+        "spice_spectrum:paprika"
+      ]
+    },
+    {
+      "name": "poppy_seeds",
+      "total": 383,
+      "train": 268,
+      "val": 57,
+      "test": 58,
+      "sources": [
+        "indian:Poppy Seeds"
+      ]
+    },
+    {
+      "name": "saffron",
+      "total": 1000,
+      "train": 700,
+      "val": 150,
+      "test": 150,
+      "sources": [
+        "spice_spectrum:saffron"
+      ]
+    },
+    {
+      "name": "star_anise",
+      "total": 601,
+      "train": 420,
+      "val": 90,
+      "test": 91,
+      "sources": [
+        "indian:Star Anise"
+      ]
+    },
+    {
+      "name": "stone_flowers",
+      "total": 877,
+      "train": 613,
+      "val": 131,
+      "test": 133,
+      "sources": [
+        "indian:Stone Flowers"
+      ]
+    },
+    {
+      "name": "turmeric",
+      "total": 1000,
+      "train": 700,
+      "val": 150,
+      "test": 150,
+      "sources": [
+        "spice_spectrum:turmeric"
+      ]
+    }
+  ]
+}

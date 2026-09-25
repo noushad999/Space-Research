@@ -1,0 +1,1 @@
+pooled 3 seeds: b=359 c=155 chi2=80.2 p=3.430e-19 favors ARC-V

@@ -1,0 +1,66 @@
+{
+  "direction": "dedup",
+  "matrices": [
+    "shortcut_evidence_dedup_s1337.json",
+    "shortcut_evidence_dedup_s2024.json",
+    "shortcut_evidence_dedup_s42.json"
+  ],
+  "collapse_gap_on_wild_test": {
+    "n_samples": 3432,
+    "n_seeds": 3,
+    "gap_pp": 37.704,
+    "ci95_pp": [
+      36.101,
+      39.336
+    ],
+    "effect": {
+      "b_ss_right_in_wrong": 1294,
+      "c_ss_wrong_in_right": 0,
+      "odds_ratio": Infinity,
+      "risk_difference": 0.377039627039627
+    },
+    "per_seed_gap_pp": [
+      {
+        "file": "shortcut_evidence_dedup_s1337.json",
+        "gap_pp": 37.063
+      },
+      {
+        "file": "shortcut_evidence_dedup_s2024.json",
+        "gap_pp": 38.374
+      },
+      {
+        "file": "shortcut_evidence_dedup_s42.json",
+        "gap_pp": 37.675
+      }
+    ]
+  },
+  "free_gap_on_studio_test": {
+    "n_samples": 1302,
+    "n_seeds": 3,
+    "gap_pp": -1.075,
+    "ci95_pp": [
+      -1.69,
+      -0.538
+    ],
+    "effect": {
+      "b_ss_right_in_wrong": 0,
+      "c_ss_wrong_in_right": 14,
+      "odds_ratio": 0.0,
+      "risk_difference": -0.010752688172043001
+    },
+    "per_seed_gap_pp": [
+      {
+        "file": "shortcut_evidence_dedup_s1337.json",
+        "gap_pp": -1.152
+      },
+      {
+        "file": "shortcut_evidence_dedup_s2024.json",
+        "gap_pp": -0.922
+      },
+      {
+        "file": "shortcut_evidence_dedup_s42.json",
+        "gap_pp": -1.152
+      }
+    ]
+  }
+}

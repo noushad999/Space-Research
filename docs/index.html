@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SpiceNet</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect x=%224%22 y=%2214%22 width=%2210%22 height=%2214%22 rx=%222%22 fill=%22%232a78d6%22/%3E%3Crect x=%2218%22 y=%224%22 width=%2210%22 height=%2224%22 rx=%222%22 fill=%22%23eb6834%22/%3E%3C/svg%3E">
+<meta name="description" content="SpiceNet: a studio-trained spice classifier loses 37.8 points on in-the-wild photos, while the reverse direction costs 0.5. Interactive results.">
+<style>
+:root {
+  color-scheme: light;
+  --surface-0: #f6f5f2;
+  --surface-1: #fcfcfb;
+  --surface-2: #f0efec;
+  --hairline:  #e3e2dd;
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted: #7a7974;
+  --accent: #2a78d6;
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --focus: #2a78d6;
+  --seq-flip: 0;
+  --seq: #cde2fb,#b7d3f6,#9ec5f4,#86b6ef,#6da7ec,#5598e7,#3987e5,#2a78d6,#256abf,#1c5cab,#184f95,#104281,#0d366b;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --surface-0: #121211;
+    --surface-1: #1a1a19;
+    --surface-2: #232321;
+    --hairline:  #33332f;
+    --text-primary: #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted: #8f8e86;
+    --accent: #6da7ec;
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --focus: #86b6ef;
+    --seq-flip: 1;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface-0: #121211;
+  --surface-1: #1a1a19;
+  --surface-2: #232321;
+  --hairline:  #33332f;
+  --text-primary: #ffffff;
+  --text-secondary: #c3c2b7;
+  --text-muted: #8f8e86;
+  --accent: #6da7ec;
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --focus: #86b6ef;
+  --seq-flip: 1;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--surface-0);
+  color: var(--text-primary);
+  font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+a { color: var(--accent); text-underline-offset: 2px; }
+code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.875em; }
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 16px; }
+
+header.wrap { padding-top: 56px; padding-bottom: 32px; text-align: center; }
+header h1 { font-size: clamp(2rem, 6vw, 3rem); line-height: 1.1; margin: 0 0 12px; letter-spacing: -0.02em; }
+header .sub { font-size: clamp(1.05rem, 2.6vw, 1.25rem); color: var(--text-secondary); margin: 0 auto 20px; max-width: 40ch; }
+header .authors { margin: 0; }
+header .affil { color: var(--text-muted); font-size: 0.9rem; margin: 2px 0 20px; }
+.links { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.btn {
+  display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 999px;
+  border: 1px solid var(--hairline); background: var(--surface-1); color: var(--text-primary);
+  text-decoration: none; font-size: 0.9rem; font-weight: 500; cursor: pointer;
+}
+.btn:hover { background: var(--surface-2); }
+.btn:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.theme-toggle { position: absolute; top: 16px; right: 16px; }
+
+section { padding: 36px 0; border-top: 1px solid var(--hairline); }
+section h2 { font-size: 1.5rem; margin: 0 0 6px; letter-spacing: -0.01em; }
+section .lede { color: var(--text-secondary); margin: 0 0 20px; max-width: 68ch; }
+
+.tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 8px; }
+.tile { background: var(--surface-1); border: 1px solid var(--hairline); border-radius: 12px; padding: 16px 18px; }
+.tile .num { font-size: clamp(1.6rem, 5vw, 2.2rem); font-weight: 650; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.tile .lbl { color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px; }
+@media (max-width: 640px) { .tiles { grid-template-columns: 1fr; } }
+
+.card { background: var(--surface-1); border: 1px solid var(--hairline); border-radius: 12px; padding: 18px; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 16px; }
+.controls .label { color: var(--text-muted); font-size: 0.85rem; margin-right: 4px; }
+.seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--hairline); border-radius: 8px; overflow: hidden; }
+.seg button {
+  border: 0; background: transparent; color: var(--text-secondary); padding: 6px 12px;
+  font: inherit; font-size: 0.85rem; cursor: pointer; border-right: 1px solid var(--hairline);
+}
+.seg button:last-child { border-right: 0; }
+.seg button[aria-pressed="true"] { background: var(--surface-2); color: var(--text-primary); font-weight: 600; }
+.check { display: inline-flex; gap: 8px; align-items: center; font-size: 0.9rem; color: var(--text-secondary); cursor: pointer; }
+
+/* 2x2 matrix */
+.matrix-layout { display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: 20px; align-items: start; }
+@media (max-width: 720px) { .matrix-layout { grid-template-columns: 1fr; } }
+.matrix { display: grid; grid-template-columns: auto 1fr 1fr; grid-template-rows: auto 1fr 1fr; gap: 2px; }
+.matrix .hdr { font-size: 0.8rem; color: var(--text-secondary); padding: 6px; display: flex; align-items: flex-end; justify-content: center; text-align: center; }
+.matrix .rowhdr { align-items: center; justify-content: flex-end; text-align: right; padding-right: 10px; }
+.cell {
+  border-radius: 6px; min-height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  position: relative; cursor: default;
+}
+.cell .v { font-size: clamp(1.4rem, 4.5vw, 2rem); font-weight: 650; font-variant-numeric: tabular-nums; }
+.cell .t { font-size: 0.75rem; opacity: 0.85; }
+.cell:hover, .cell:focus-visible { box-shadow: inset 0 0 0 2px var(--text-primary); }
+.readout { display: grid; gap: 12px; }
+.readout .r { background: var(--surface-2); border-radius: 8px; padding: 12px 14px; }
+.readout .r .k { font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
+.readout .r .val { font-size: 1.4rem; font-weight: 650; font-variant-numeric: tabular-nums; }
+.readout .r .note { font-size: 0.8rem; color: var(--text-secondary); }
+.key { display: inline-block; width: 14px; height: 3px; border-radius: 2px; }
+
+/* charts */
+.chart { width: 100%; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart text { fill: var(--text-secondary); font-size: 12px; font-family: inherit; }
+.chart .ink { fill: var(--text-primary); }
+.chart .muted { fill: var(--text-muted); }
+.chart .grid { stroke: var(--hairline); stroke-width: 1; }
+.chart .mark { transition: opacity 150ms ease; }
+.chart .dim { opacity: 0.25; }
+.legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.85rem; color: var(--text-secondary); margin: 0 0 8px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend .sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.caveat { font-size: 0.85rem; color: var(--text-muted); margin: 12px 0 0; }
+
+.tip {
+  position: fixed; pointer-events: none; z-index: 10; background: var(--surface-1); color: var(--text-primary);
+  border: 1px solid var(--hairline); border-radius: 8px; padding: 8px 10px; font-size: 0.8rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12); opacity: 0; transition: opacity 100ms ease; max-width: 260px;
+}
+.tip.on { opacity: 1; }
+.tip .tt { color: var(--text-secondary); margin-bottom: 4px; }
+.tip .row { display: flex; align-items: center; gap: 8px; }
+.tip .row b { font-variant-numeric: tabular-nums; }
+
+details.table { margin-top: 14px; }
+details.table summary { cursor: pointer; font-size: 0.85rem; color: var(--text-secondary); }
+table { border-collapse: collapse; width: 100%; font-size: 0.85rem; margin-top: 8px; font-variant-numeric: tabular-nums; }
+th, td { text-align: right; padding: 6px 8px; border-bottom: 1px solid var(--hairline); }
+th:first-child, td:first-child { text-align: left; }
+th { color: var(--text-secondary); font-weight: 600; }
+.scroll-x { overflow-x: auto; }
+
+/* reproduce */
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+pre.cmd {
+  position: relative; margin: 0; background: var(--surface-2); border-radius: 8px; padding: 14px 16px;
+  overflow-x: auto; white-space: pre; color: var(--text-primary); line-height: 1.55;
+}
+pre.cmd .c { color: var(--text-muted); }
+.copy { position: absolute; top: 8px; right: 8px; font-size: 0.75rem; padding: 4px 10px; }
+.stepnote { font-size: 0.9rem; color: var(--text-secondary); margin: 10px 0 0; }
+
+footer.wrap { padding-top: 24px; padding-bottom: 56px; border-top: 1px solid var(--hairline); color: var(--text-secondary); font-size: 0.9rem; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<button class="btn theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">◐ Theme</button>
+
+<header class="wrap">
+  <h1>SpiceNet</h1>
+  <p class="sub">Quantifying and narrowing the acquisition-transfer gap in image-based spice identification</p>
+  <p class="authors">Md. Noushad Jahan Ramim · Maisha Sameha · Nazmun Nahid</p>
+  <p class="affil">University of Asia Pacific, Bangladesh</p>
+  <div class="links">
+    <a class="btn" href="https://github.com/noushad999/spicenet">Code</a>
+    <a class="btn" href="https://doi.org/10.57967/hf/9655">Manifests &amp; checkpoints</a>
+    <a class="btn" href="#cite">Cite</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <section aria-labelledby="s-tldr">
+    <h2 id="s-tldr">In one sentence</h2>
+    <p class="lede">A spice classifier trained on studio photographs scores 100% on studio photographs and loses almost 38 points on everyday photographs of the same spices, while a model trained on everyday photographs moves to the studio almost for free.</p>
+    <div class="tiles">
+      <div class="tile"><div class="num">−37.8 pp</div><div class="lbl">studio → in-the-wild, 3 seeds (±0.89)</div></div>
+      <div class="tile"><div class="num">−0.5 pp</div><div class="lbl">in-the-wild → studio, 3 seeds (±0.09)</div></div>
+      <div class="tile"><div class="num">1,367 : 0</div><div class="lbl">errors fixed vs. introduced by the in-the-wild model (McNemar <i>p</i> = 8.5×10⁻²⁹⁹)</div></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-matrix">
+    <h2 id="s-matrix">The asymmetry, cell by cell</h2>
+    <p class="lede">Train on one source, test on both. Three of the four cells stay near 100%. Switch between seeds and the two controls: the collapsed cell does not move.</p>
+    <div class="card">
+      <div class="controls">
+        <span class="label">Show</span>
+        <div class="seg" role="group" aria-label="Matrix variant" id="matrixSeg"></div>
+      </div>
+      <div class="matrix-layout">
+        <div class="matrix" id="matrix" aria-live="polite"></div>
+        <div class="readout">
+          <div class="r"><div class="k"><span class="key" style="background:var(--series-1)"></span>Cost, studio → in-the-wild</div><div class="val" id="fwd"></div></div>
+          <div class="r"><div class="k"><span class="key" style="background:var(--series-2)"></span>Cost, in-the-wild → studio</div><div class="val" id="rev"></div></div>
+          <div class="r"><div class="note" id="matrixNote"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-arch">
+    <h2 id="s-arch">Every architecture collapses the same way</h2>
+    <p class="lede">Eight models, light and heavy, convolutional and attention-based. All reach about 100% within the studio source; all lose 32 to 86 points when moved to everyday photographs. The reverse cost stays small for most.</p>
+    <div class="card">
+      <div class="controls">
+        <span class="label">Sort by</span>
+        <div class="seg" role="group" aria-label="Sort architectures" id="archSort"></div>
+      </div>
+      <div class="legend"><span><i class="sw" style="background:var(--series-1)"></i>studio → in-the-wild drop</span><span><i class="sw" style="background:var(--series-2)"></i>in-the-wild → studio drop</span></div>
+      <div class="chart" id="archChart"></div>
+      <p class="caveat">Rows are not protocol-matched, so the order is not a ranking: six backbones and GranuFormer are single-seed, SpiceFusionNet is the three-seed mean.</p>
+      <details class="table"><summary>Show as table</summary><div class="scroll-x" id="archTable"></div></details>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-class">
+    <h2 id="s-class">Where the points go</h2>
+    <p class="lede">Per-class accuracy of the studio-trained model on everyday photographs (every class is 100% in the studio). Small, look-alike seeds fall hardest. Coriander is partly a labeling artifact, since the two sources photograph different plant organs, so try removing it.</p>
+    <div class="card">
+      <div class="controls">
+        <label class="check"><input type="checkbox" id="dropCor"> Drop coriander</label>
+      </div>
+      <div class="chart" id="classChart"></div>
+      <p class="caveat" id="classNote"></p>
+      <details class="table"><summary>Show as table</summary><div class="scroll-x" id="classTable"></div></details>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-fix">
+    <h2 id="s-fix">What a single training source can recover</h2>
+    <p class="lede">Held-out accuracy (studio → in-the-wild) for ordinary training and five interventions. Bars show ±1 std over three seeds; hollow dots are single-seed ablations. The elaborate method and a one-line logit penalty land in the same place.</p>
+    <div class="card">
+      <div class="chart" id="fixChart"></div>
+      <p class="caveat">ARC-V vs ERM, pooled over three seeds: McNemar <i>b</i> = 359, <i>c</i> = 155, <i>p</i> = 3.4×10⁻¹⁹. ARC-V and spectral decoupling cannot be separated at three seeds.</p>
+      <details class="table"><summary>Show as table</summary><div class="scroll-x" id="fixTable"></div></details>
+    </div>
+  </section>
+
+  <section aria-labelledby="s-run">
+    <h2 id="s-run">Reproduce it</h2>
+    <p class="lede">Each experiment is one command. Every pipeline accepts <code>--smoke</code> for a few-minute check before the real run.</p>
+    <div class="card">
+      <div class="tabs seg" role="tablist" aria-label="Reproduction steps" id="runTabs"></div>
+      <pre class="cmd" id="runCmd"></pre>
+      <p class="stepnote" id="runNote"></p>
+    </div>
+  </section>
+
+  <section aria-labelledby="cite">
+    <h2 id="cite">Citation</h2>
+    <pre class="cmd" id="bib">@article{ramim2026spicenet,
+  title  = {SpiceNet: Quantifying and Narrowing the Acquisition-Transfer Gap in
+            Image-Based Spice Identification},
+  author = {Ramim, Md. Noushad Jahan and Sameha, Maisha and Nahid, Nazmun},
+  year   = {2026},
+  note   = {Manuscript under review}
+}</pre>
+  </section>
+</main>
+
+<footer class="wrap">
+  Code and manifests under the MIT license. Source images are not redistributed:
+  <a href="https://doi.org/10.1016/j.dib.2025.112097">SpiceSpectrum</a> (CC BY-ND 4.0) and
+  <a href="https://doi.org/10.1016/j.dib.2024.110936">Indian Spices</a> (CC BY 4.0).
+  All numbers on this page come from <a href="https://github.com/noushad999/spicenet/tree/main/results"><code>results/</code></a> and the paper's tables.
+</footer>
+
+<div class="tip" id="tip" role="tooltip"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- theme ----------
+  const root = document.documentElement;
+  try { const t = localStorage.getItem("spicenet-theme"); if (t) root.dataset.theme = t; } catch (e) {}
+  document.getElementById("themeToggle").addEventListener("click", () => {
+    const dark = root.dataset.theme ? root.dataset.theme === "dark"
+      : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    root.dataset.theme = dark ? "light" : "dark";
+    try { localStorage.setItem("spicenet-theme", root.dataset.theme); } catch (e) {}
+    renderAll();
+  });
+  const css = (name) => getComputedStyle(root).getPropertyValue(name).trim();
+
+  // ---------- helpers ----------
+  const SVGNS = "http://www.w3.org/2000/svg";
+  function el(tag, attrs, parent) {
+    const n = document.createElementNS(SVGNS, tag);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  function h(tag, props, parent) {
+    const n = document.createElement(tag);
+    Object.assign(n, props || {});
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  function segmented(container, options, current, onPick) {
+    container.replaceChildren();
+    options.forEach((o) => {
+      const b = h("button", { type: "button", textContent: o.label }, container);
+      b.setAttribute("aria-pressed", String(o.id === current));
+      b.addEventListener("click", () => onPick(o.id));
+    });
+  }
+  // rounded-end bar path: square at x0, 4px radius at the data end
+  function barPath(x0, x1, y, hgt) {
+    const r = Math.min(4, Math.abs(x1 - x0) / 2, hgt / 2);
+    const dir = x1 >= x0 ? 1 : -1;
+    const xe = x1 - dir * r;
+    return `M${x0},${y}H${xe}Q${x1},${y} ${x1},${y + r}V${y + hgt - r}Q${x1},${y + hgt} ${xe},${y + hgt}H${x0}Z`;
+  }
+  // width of the longest label, so the label column never clips
+  const measureCtx = document.createElement("canvas").getContext("2d");
+  function labelWidth(labels, bold) {
+    measureCtx.font = `${bold ? 600 : 400} 12px ${getComputedStyle(document.body).fontFamily}`;
+    return Math.ceil(Math.max(...labels.map((s) => measureCtx.measureText(s).width))) + 18;
+  }
+  function table(container, head, rows) {
+    container.replaceChildren();
+    const t = h("table", {}, container);
+    const tr = h("tr", {}, h("thead", {}, t));
+    head.forEach((c) => h("th", { textContent: c }, tr));
+    const tb = h("tbody", {}, t);
+    rows.forEach((r) => { const row = h("tr", {}, tb); r.forEach((c) => h("td", { textContent: c }, row)); });
+  }
+
+  // ---------- tooltip ----------
+  const tip = document.getElementById("tip");
+  function showTip(evt, title, rows) {
+    tip.replaceChildren();
+    h("div", { className: "tt", textContent: title }, tip);
+    rows.forEach(([color, label, value]) => {
+      const r = h("div", { className: "row" }, tip);
+      if (color) { const k = h("span", { className: "key" }, r); k.style.background = color; }
+      h("b", { textContent: value }, r);
+      h("span", { textContent: label }, r);
+    });
+    let x, y;
+    if (evt.clientX !== undefined && evt.type !== "focus") { x = evt.clientX; y = evt.clientY; }
+    else { const b = evt.target.getBoundingClientRect(); x = b.left + b.width / 2; y = b.top; }
+    tip.classList.add("on");
+    const w = tip.offsetWidth, hh = tip.offsetHeight;
+    tip.style.left = Math.max(8, Math.min(window.innerWidth - w - 8, x + 14)) + "px";
+    tip.style.top = Math.max(8, y - hh - 12) + "px";
+  }
+  function hideTip() { tip.classList.remove("on"); }
+  function hoverable(node, title, rows) {
+    node.setAttribute("tabindex", "0");
+    node.addEventListener("pointermove", (e) => showTip(e, title, rows()));
+    node.addEventListener("pointerleave", hideTip);
+    node.addEventListener("focus", (e) => showTip(e, title, rows()));
+    node.addEventListener("blur", hideTip);
+  }
+
+  // ======================================================================
+  // DATA (sources: results/*.json and the paper's tables)
+  // ss = in-the-wild (SpiceSpectrum), in = studio (Indian Spices)
+  // ======================================================================
+  const MATRIX = {
+    mean:    { label: "Mean of 3 seeds", ssW: 99.64, ssC: 99.16, inW: 100.0, inC: 62.23, fwd: "37.77 ± 0.89", rev: "0.48 ± 0.09",
+               note: "Seeds 42, 1337, 2024. Pooled McNemar: b = 1367, c = 0, p = 8.5×10⁻²⁹⁹." },
+    s42:     { label: "Seed 42",   ssW: 99.67, ssC: 99.10, inW: 100.0, inC: 62.48, fwd: "37.52", rev: "0.57", note: "McNemar b = 453, c = 0." },
+    s1337:   { label: "Seed 1337", ssW: 99.59, ssC: 99.10, inW: 100.0, inC: 62.97, fwd: "37.03", rev: "0.49", note: "McNemar b = 446, c = 0." },
+    s2024:   { label: "Seed 2024", ssW: 99.67, ssC: 99.28, inW: 100.0, inC: 61.25, fwd: "38.75", rev: "0.39", note: "McNemar b = 468, c = 0." },
+    matched: { label: "Size-matched", ssW: 99.10, ssC: 98.44, inW: 100.0, inC: 62.23, fwd: "37.77 ± 0.89", rev: "0.65 ± 0.28",
+               note: "The in-the-wild training set is subsampled to the studio count (3 seeds). Its transfer cost stays below one point, so the asymmetry is not a training-set-size effect." },
+    dedup:   { label: "De-duplicated", ssW: 99.65, ssC: 98.85, inW: 100.0, inC: 61.19, fwd: "38.81", rev: "0.80",
+               note: "Seed 42 on leakage-free test splits (near-duplicates removed). The gap does not come from duplicated images." },
+  };
+  const ARCH = [
+    { m: "ConvNeXt-Tiny", fwd: 32.4, rev: 0.75, within: 100.0 },
+    { m: "SpiceFusionNet (ours)", fwd: 37.8, rev: 0.48, within: 100.0, ours: true },
+    { m: "DenseNet-121", fwd: 39.6, rev: 3.46, within: 100.0 },
+    { m: "ResNet-50", fwd: 42.3, rev: 7.75, within: 99.8 },
+    { m: "EfficientNet-B4", fwd: 53.9, rev: 2.27, within: 100.0 },
+    { m: "EfficientNet-B0", fwd: 54.1, rev: 0.13, within: 100.0 },
+    { m: "MobileNetV3-Large", fwd: 62.1, rev: -0.13, within: 100.0 },
+    { m: "GranuFormer", fwd: 85.9, rev: 15.07, within: 100.0 },
+  ];
+  const CLASSES = [
+    { c: "coriander", wild: 8.17 }, { c: "black pepper", wild: 43.94 }, { c: "green cardamom", wild: 51.28 },
+    { c: "cumin", wild: 64.96 }, { c: "cloves", wild: 67.34 }, { c: "cinnamon", wild: 83.02 },
+    { c: "nutmeg", wild: 88.02 }, { c: "ginger", wild: 91.11 },
+  ];
+  const FIX = [
+    { m: "Ordinary training (ERM)", acc: 61.71, sd: 1.82, seeds: 3 },
+    { m: "Self-challenging (RSC)", acc: 63.68, sd: 2.35, seeds: 3 },
+    { m: "Statistic mixing only", acc: 64.78, sd: null, seeds: 1 },
+    { m: "Amplitude mixing only", acc: 66.34, sd: null, seeds: 1 },
+    { m: "ARC-V (both mixings)", acc: 67.32, sd: 1.72, seeds: 3 },
+    { m: "Spectral decoupling", acc: 67.60, sd: 0.84, seeds: 3 },
+  ];
+  const RUNS = [
+    { id: "setup", label: "Setup", cmd: [
+      "pip install -r requirements.txt",
+      "pytest -q tests                          # 37 unit tests, CPU",
+      "",
+      "# put the two image collections in data/ (or set SPICENET_DATA)",
+      "python scripts/data/download_mendeley_spices.py   # studio source",
+      "python scripts/data/install_manifests.py          # released splits -> outputs/"],
+      note: "The images are not redistributed. Manifests hold relative paths and are resolved against SPICENET_DATA." },
+    { id: "matrix", label: "2×2 matrix", cmd: [
+      "python pipelines/run_cross_source.py --smoke",
+      "python pipelines/run_cross_source.py      # 6 trainings, eval, aggregate, figures",
+      "python pipelines/run_evidence.py          # confusion, bootstrap CIs, de-dup re-test"],
+      note: "Reproduces the headline asymmetry over seeds 42, 1337 and 2024." },
+    { id: "matched", label: "Size-matched", cmd: [
+      "python pipelines/run_matched_control.py --smoke",
+      "python pipelines/run_matched_control.py"],
+      note: "Subsamples the in-the-wild source to the studio count, independently per seed." },
+    { id: "arch", label: "8 architectures", cmd: [
+      "python pipelines/run_benchmark.py --smoke",
+      "python pipelines/run_benchmark.py --cooldown 180",
+      "python scripts/figures/make_benchmark_table.py"],
+      note: "Resumable; skips backbones whose checkpoints already exist." },
+    { id: "dg", label: "Interventions", cmd: [
+      "for s in 42 1337 2024; do",
+      "  python pipelines/run_arcv.py --methods erm arcv rsc sd --seed $s",
+      "done",
+      "python scripts/eval/aggregate_arcv_seeds.py",
+      "python scripts/eval/eval_arcv_mcnemar.py"],
+      note: "Single training source, tested on the held-out source." },
+  ];
+
+  // ======================================================================
+  // 2x2 matrix
+  // ======================================================================
+  let matrixView = "mean";
+  function seqColor(acc) {
+    const ramp = css("--seq").split(",").map((s) => s.trim());
+    let t = Math.max(0, Math.min(1, (acc - 50) / 50));          // 50% .. 100% accuracy
+    if (css("--seq-flip") === "1") t = 1 - t;                    // dark mode: low recedes into the surface
+    return ramp[Math.round(t * (ramp.length - 1))];
+  }
+  function inkFor(hex) {                                         // text ink from the fill's luminance
+    const n = parseInt(hex.slice(1), 16), lin = (c) => { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
+    const L = 0.2126 * lin(n >> 16) + 0.7152 * lin((n >> 8) & 255) + 0.0722 * lin(n & 255);
+    return L > 0.25 ? "#0b0b0b" : "#ffffff";
+  }
+  function renderMatrix() {
+    segmented(document.getElementById("matrixSeg"),
+      Object.entries(MATRIX).map(([id, v]) => ({ id, label: v.label })), matrixView,
+      (id) => { matrixView = id; renderMatrix(); });
+    const d = MATRIX[matrixView];
+    const g = document.getElementById("matrix");
+    g.replaceChildren();
+    h("div", { className: "hdr" }, g);
+    h("div", { className: "hdr", textContent: "Tested on in-the-wild" }, g);
+    h("div", { className: "hdr", textContent: "Tested on studio" }, g);
+    const rows = [
+      ["Trained on in-the-wild", [["within source", d.ssW], ["cross source", d.ssC]]],
+      ["Trained on studio", [["cross source", d.inC], ["within source", d.inW]]],
+    ];
+    rows.forEach(([rh, cells]) => {
+      h("div", { className: "hdr rowhdr", textContent: rh }, g);
+      cells.forEach(([kind, acc]) => {
+        const c = h("div", { className: "cell" }, g);
+        const fill = seqColor(acc);
+        c.style.background = fill;
+        c.style.color = inkFor(fill);
+        h("div", { className: "v", textContent: acc.toFixed(2) + "%" }, c);
+        h("div", { className: "t", textContent: kind }, c);
+        c.setAttribute("aria-label", `${rh}, ${kind}: ${acc.toFixed(2)} percent`);
+        hoverable(c, `${rh} · ${kind}`, () => [[null, "top-1 accuracy", acc.toFixed(2) + "%"]]);
+      });
+    });
+    document.getElementById("fwd").textContent = "−" + d.fwd + " pp";
+    document.getElementById("rev").textContent = "−" + d.rev + " pp";
+    document.getElementById("matrixNote").textContent = d.note;
+  }
+
+  // ======================================================================
+  // architecture paired bars
+  // ======================================================================
+  let archSort = "fwd";
+  function renderArch() {
+    segmented(document.getElementById("archSort"),
+      [{ id: "fwd", label: "Forward drop" }, { id: "rev", label: "Reverse drop" }, { id: "name", label: "Name" }],
+      archSort, (id) => { archSort = id; renderArch(); });
+    const data = ARCH.slice().sort((a, b) =>
+      archSort === "name" ? a.m.localeCompare(b.m) : archSort === "rev" ? b.rev - a.rev : a.fwd - b.fwd);
+    const box = document.getElementById("archChart");
+    const W = Math.max(320, box.clientWidth || 800);
+    const labelW = labelWidth(data.map((d) => d.m), true), padR = 44, band = 44, barH = 14, top = 22;
+    const H = top + data.length * band + 8;
+    const x = (v) => labelW + (Math.max(v, 0) / 90) * (W - labelW - padR);
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Accuracy drop per architecture in both directions" });
+    [0, 20, 40, 60, 80].forEach((t) => {
+      el("line", { x1: x(t), x2: x(t), y1: top - 6, y2: H - 4, class: "grid" }, svg);
+      el("text", { x: x(t), y: 12, "text-anchor": "middle", class: "muted" }, svg).textContent = t + " pp";
+    });
+    const c1 = css("--series-1"), c2 = css("--series-2");
+    data.forEach((d, i) => {
+      const y = top + i * band + (band - 2 * barH - 2) / 2;
+      const lab = el("text", { x: labelW - 10, y: y + barH + 5, "text-anchor": "end", class: d.ours ? "ink" : "" }, svg);
+      lab.textContent = d.m; if (d.ours) lab.setAttribute("font-weight", "600");
+      const g = el("g", { class: "mark" }, svg);
+      el("rect", { x: labelW - 4, y: y - 2, width: W - labelW - padR + 44, height: 2 * barH + 6, fill: "transparent" }, g);
+      el("path", { d: barPath(x(0), Math.max(x(d.fwd), x(0) + 1), y, barH), fill: c1 }, g);
+      el("path", { d: barPath(x(0), Math.max(x(d.rev), x(0) + 1), y + barH + 2, barH), fill: c2 }, g);
+      const tv = el("text", { x: x(d.fwd) + 6, y: y + barH - 3, class: "ink" }, g); tv.textContent = d.fwd.toFixed(1);
+      if (d.rev >= 5) { const rv = el("text", { x: x(d.rev) + 6, y: y + 2 * barH - 1 }, g); rv.textContent = d.rev.toFixed(1); }
+      g.setAttribute("aria-label", `${d.m}: forward drop ${d.fwd} points, reverse drop ${d.rev} points`);
+      hoverable(g, d.m, () => [
+        [c1, "studio → in-the-wild", d.fwd.toFixed(1) + " pp"],
+        [c2, "in-the-wild → studio", d.rev.toFixed(2) + " pp"],
+        [null, "within studio", d.within.toFixed(1) + "%"]]);
+      g.addEventListener("pointerenter", () => svg.querySelectorAll("g.mark").forEach((o) => o !== g && o.classList.add("dim")));
+      g.addEventListener("pointerleave", () => svg.querySelectorAll("g.mark").forEach((o) => o.classList.remove("dim")));
+    });
+    box.replaceChildren(svg);
+    table(document.getElementById("archTable"), ["Model", "Studio (within)", "Forward drop", "Reverse drop"],
+      data.map((d) => [d.m, d.within.toFixed(1), d.fwd.toFixed(1), d.rev.toFixed(2)]));
+  }
+
+  // ======================================================================
+  // per-class bars
+  // ======================================================================
+  function renderClass() {
+    const drop = document.getElementById("dropCor").checked;
+    const box = document.getElementById("classChart");
+    const W = Math.max(320, box.clientWidth || 800);
+    const labelW = labelWidth(CLASSES.map((d) => d.c)), padR = 40, band = 34, barH = 18, top = 22;
+    const H = top + CLASSES.length * band + 8;
+    const x = (v) => labelW + (v / 100) * (W - labelW - padR);
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Per-class accuracy in the wild for the studio-trained model" });
+    [0, 25, 50, 75, 100].forEach((t) => {
+      el("line", { x1: x(t), x2: x(t), y1: top - 6, y2: H - 4, class: "grid" }, svg);
+      el("text", { x: x(t), y: 12, "text-anchor": "middle", class: "muted" }, svg).textContent = t + "%";
+    });
+    const c1 = css("--series-1");
+    CLASSES.forEach((d, i) => {
+      const y = top + i * band + (band - barH) / 2;
+      const off = drop && d.c === "coriander";
+      const g = el("g", { class: "mark" + (off ? " dim" : "") }, svg);
+      el("text", { x: labelW - 10, y: y + barH - 4, "text-anchor": "end" }, g).textContent = d.c;
+      el("rect", { x: labelW - 4, y: y - 4, width: W - labelW - padR + 44, height: barH + 8, fill: "transparent" }, g);
+      el("path", { d: barPath(x(0), x(d.wild), y, barH), fill: c1 }, g);
+      el("text", { x: x(d.wild) + 6, y: y + barH - 4, class: "ink" }, g).textContent = d.wild.toFixed(1);
+      hoverable(g, d.c, () => [[c1, "in-the-wild accuracy", d.wild.toFixed(2) + "%"], [null, "studio accuracy", "100.00%"], [null, "drop", (100 - d.wild).toFixed(2) + " pp"]]);
+    });
+    box.replaceChildren(svg);
+    document.getElementById("classNote").textContent = drop
+      ? "Without coriander the collapse is still 29.9 points, against 0.4 in the reverse direction. The asymmetry is not one badly paired class."
+      : "With all eight classes the collapse is 37.8 points, against 0.5 in the reverse direction.";
+    table(document.getElementById("classTable"), ["Class", "Studio", "In-the-wild", "Drop"],
+      CLASSES.map((d) => [d.c, "100.00", d.wild.toFixed(2), (100 - d.wild).toFixed(2)]));
+  }
+
+  // ======================================================================
+  // interventions: dot + error bar
+  // ======================================================================
+  function renderFix() {
+    const box = document.getElementById("fixChart");
+    const W = Math.max(320, box.clientWidth || 800);
+    const labelW = labelWidth(FIX.map((d) => d.m)), padR = 24, band = 38, top = 24;
+    const H = top + FIX.length * band + 10;
+    const lo = 58, hi = 70;
+    const x = (v) => labelW + ((v - lo) / (hi - lo)) * (W - labelW - padR);
+    const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img", "aria-label": "Held-out accuracy per training method" });
+    for (let t = lo; t <= hi; t += 2) {
+      el("line", { x1: x(t), x2: x(t), y1: top - 8, y2: H - 4, class: "grid" }, svg);
+      el("text", { x: x(t), y: 12, "text-anchor": "middle", class: "muted" }, svg).textContent = t + "%";
+    }
+    const erm = FIX[0].acc;
+    el("line", { x1: x(erm), x2: x(erm), y1: top - 8, y2: H - 4, stroke: css("--text-muted"), "stroke-width": 1 }, svg);
+    const c1 = css("--series-1"), surf = css("--surface-1");
+    FIX.forEach((d, i) => {
+      const cy = top + i * band + band / 2;
+      const g = el("g", { class: "mark" }, svg);
+      el("text", { x: labelW - 12, y: cy + 4, "text-anchor": "end" }, g).textContent = d.m;
+      el("rect", { x: labelW - 4, y: cy - band / 2 + 2, width: W - labelW - padR + 8, height: band - 4, fill: "transparent" }, g);
+      if (d.sd) {
+        el("line", { x1: x(d.acc - d.sd), x2: x(d.acc + d.sd), y1: cy, y2: cy, stroke: c1, "stroke-width": 2, "stroke-linecap": "round" }, g);
+        [d.acc - d.sd, d.acc + d.sd].forEach((v) => el("line", { x1: x(v), x2: x(v), y1: cy - 5, y2: cy + 5, stroke: c1, "stroke-width": 2, "stroke-linecap": "round" }, g));
+      }
+      el("circle", { cx: x(d.acc), cy, r: 6, fill: d.seeds === 1 ? surf : c1, stroke: d.seeds === 1 ? c1 : surf, "stroke-width": 2 }, g);
+      g.setAttribute("aria-label", `${d.m}: ${d.acc}% held-out accuracy`);
+      hoverable(g, d.m, () => [
+        [c1, "held-out accuracy", d.acc.toFixed(2) + "%" + (d.sd ? " ± " + d.sd.toFixed(2) : "")],
+        [null, "vs ERM", (d.acc - erm >= 0 ? "+" : "") + (d.acc - erm).toFixed(2) + " pp"],
+        [null, "seeds", String(d.seeds)]]);
+    });
+    el("text", { x: x(erm) + 4, y: H - 6, class: "muted" }, svg).textContent = "ERM";
+    box.replaceChildren(svg);
+    table(document.getElementById("fixTable"), ["Method", "In-the-wild accuracy", "Std", "Seeds"],
+      FIX.map((d) => [d.m, d.acc.toFixed(2), d.sd ? d.sd.toFixed(2) : "–", String(d.seeds)]));
+  }
+
+  // ======================================================================
+  // reproduce tabs + copy
+  // ======================================================================
+  let runView = "setup";
+  function renderRun() {
+    segmented(document.getElementById("runTabs"), RUNS.map((r) => ({ id: r.id, label: r.label })), runView,
+      (id) => { runView = id; renderRun(); });
+    const r = RUNS.find((x) => x.id === runView);
+    const pre = document.getElementById("runCmd");
+    pre.replaceChildren();
+    r.cmd.forEach((line, i) => {
+      const hash = line.indexOf("#");
+      if (hash >= 0) {
+        pre.appendChild(document.createTextNode(line.slice(0, hash)));
+        h("span", { className: "c", textContent: line.slice(hash) }, pre);
+      } else pre.appendChild(document.createTextNode(line));
+      if (i < r.cmd.length - 1) pre.appendChild(document.createTextNode("\n"));
+    });
+    addCopy(pre, () => r.cmd.join("\n"));
+    document.getElementById("runNote").textContent = r.note;
+  }
+  function addCopy(pre, text) {
+    const b = h("button", { type: "button", className: "btn copy", textContent: "Copy" }, pre);
+    b.addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(text()); b.textContent = "Copied"; }
+      catch (e) { b.textContent = "Select and copy"; }
+      setTimeout(() => (b.textContent = "Copy"), 1500);
+    });
+  }
+  const bib = document.getElementById("bib");
+  const bibText = bib.textContent;
+  addCopy(bib, () => bibText);
+
+  // ---------- boot ----------
+  function renderAll() { renderMatrix(); renderArch(); renderClass(); renderFix(); }
+  document.getElementById("dropCor").addEventListener("change", renderClass);
+  let rt;
+  window.addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(renderAll, 120); });
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", renderAll);
+  renderAll();
+  renderRun();
+})();
+</script>
+</body>
+</html>

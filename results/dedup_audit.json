@@ -1,0 +1,150 @@
+{
+  "base": "outputs/unified_benchmark.json",
+  "n_images": 21991,
+  "n_hash_fail": 0,
+  "n_classes": 22,
+  "overlap_classes": [
+    "black_pepper",
+    "cinnamon",
+    "cloves",
+    "coriander",
+    "cumin",
+    "ginger",
+    "green_cardamom",
+    "nutmeg"
+  ],
+  "method": "dHash(64) candidate gate, then 32x32 grayscale normalized-RMSE pixel verify",
+  "dup_rmse_threshold": 0.05,
+  "cross_source": {
+    "candidates_dhash": 77,
+    "candidates_by_hamming": {
+      "0": 0,
+      "1": 0,
+      "2": 2,
+      "3": 7,
+      "5": 77
+    },
+    "verified_by_rmse": {
+      "0.02": 0,
+      "0.05": 0,
+      "0.1": 0
+    },
+    "verified_dups": 0,
+    "examples": []
+  },
+  "train_test_leakage": {
+    "candidates_dhash": 6420,
+    "candidates_by_hamming": {
+      "0": 440,
+      "1": 959,
+      "2": 1884,
+      "3": 3019,
+      "5": 6420
+    },
+    "verified_by_rmse": {
+      "0.02": 644,
+      "0.05": 2554,
+      "0.1": 5127
+    },
+    "verified_dups": 2554,
+    "examples": [
+      {
+        "a": "Indian_Spices\\Bay Leaf\\Bay Leaf\\BayLeaf711.jpg",
+        "b": "Indian_Spices\\Bay Leaf\\Bay Leaf\\BayLeaf712.jpg",
+        "hamming": 0,
+        "rmse": 0.0,
+        "a_src": "indian",
+        "b_src": "indian",
+        "a_split": "test",
+        "b_split": "train",
+        "class": "bay_leaf"
+      },
+      {
+        "a": "Indian_Spices\\Bay Leaf\\Bay Leaf\\BayLeaf646.jpg",
+        "b": "Indian_Spices\\Bay Leaf\\Bay Leaf\\BayLeaf647.jpg",
+        "hamming": 0,
+        "rmse": 0.0,
+        "a_src": "indian",
+        "b_src": "indian",
+        "a_split": "test",
+        "b_split": "train",
+        "class": "bay_leaf"
+      },
+      {
+        "a": "Indian_Spices\\Bay Leaf\\Bay Leaf\\BayLeaf371.jpg",
+        "b": "Indian_Spices\\Bay Leaf\\Bay Leaf\\BayLeaf372.jpg",
+        "hamming": 0,
+        "rmse": 0.0,
+        "a_src": "indian",
+        "b_src": "indian",
+        "a_split": "test",
+        "b_split": "val",
+        "class": "bay_leaf"
+      },
+      {
+        "a": "Indian_Spices\\Bay Leaf\\Bay Leaf\\BayLeaf886.jpg",
+        "b": "Indian_Spices\\Bay Leaf\\Bay Leaf\\BayLeaf887.jpg",
+        "hamming": 0,
+        "rmse": 0.0,
+        "a_src": "indian",
+        "b_src": "indian",
+        "a_split": "test",
+        "b_split": "train",
+        "class": "bay_leaf"
+      },
+      {
+        "a": "Indian_Spices\\Bay Leaf\\Bay Leaf\\BayLeaf960.jpg",
+        "b": "Indian_Spices\\Bay Leaf\\Bay Leaf\\BayLeaf961.jpg",
+        "hamming": 0,
+        "rmse": 0.0,
+        "a_src": "indian",
+        "b_src": "indian",
+        "a_split": "test",
+        "b_split": "train",
+        "class": "bay_leaf"
+      },
+      {
+        "a": "Indian_Spices\\Bay Leaf\\Bay Leaf\\BayLeaf199.jpg",
+        "b": "Indian_Spices\\Bay Leaf\\Bay Leaf\\BayLeaf198.jpg",
+        "hamming": 0,
+        "rmse": 0.0,
+        "a_src": "indian",
+        "b_src": "indian",
+        "a_split": "test",
+        "b_split": "train",
+        "class": "bay_leaf"
+      },
+      {
+        "a": "Indian_Spices\\Bay Leaf\\Bay Leaf\\BayLeaf139.jpg",
+        "b": "Indian_Spices\\Bay Leaf\\Bay Leaf\\BayLeaf140.jpg",
+        "hamming": 0,
+        "rmse": 0.0,
+        "a_src": "indian",
+        "b_src": "indian",
+        "a_split": "test",
+        "b_split": "train",
+        "class": "bay_leaf"
+      },
+      {
+        "a": "Indian_Spices\\Bay Leaf\\Bay Leaf\\BayLeaf532.jpg",
+        "b": "Indian_Spices\\Bay Leaf\\Bay Leaf\\BayLeaf529.jpg",
+        "hamming": 0,
+        "rmse": 0.0,
+        "a_src": "indian",
+        "b_src": "indian",
+        "a_split": "test",
+        "b_split": "train",
+        "class": "bay_leaf"
+      }
+    ]
+  },
+  "within_source_visual_neighbours": 26822,
+  "exact_dhash": {
+    "groups": 1144,
+    "cross_source_groups": 0
+  },
+  "verdict": {
+    "cross_source_clean": true,
+    "no_train_test_leakage": false
+  }
+}

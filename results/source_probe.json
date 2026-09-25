@@ -1,0 +1,346 @@
+{
+  "checkpoint": "outputs/checkpoints/unified/best.pth",
+  "manifest": "outputs/unified_benchmark.json",
+  "split": "test",
+  "overlap_classes": [
+    "black_pepper",
+    "cinnamon",
+    "cloves",
+    "coriander",
+    "cumin",
+    "ginger",
+    "green_cardamom",
+    "nutmeg"
+  ],
+  "n_samples": 1200,
+  "aggregate_source_probe": {
+    "f_cnn": {
+      "mean": 0.9950297619047619,
+      "std": 0.00532588433353939,
+      "n_classes": 8
+    },
+    "f_tex": {
+      "mean": 0.8620936486679478,
+      "std": 0.0906608744413053,
+      "n_classes": 8
+    },
+    "f_col": {
+      "mean": 0.9861561362852124,
+      "std": 0.008220240471198372,
+      "n_classes": 8
+    },
+    "fused": {
+      "mean": 0.998538961038961,
+      "std": 0.0026125774252323077,
+      "n_classes": 8
+    }
+  },
+  "class_probe": {
+    "f_cnn": 0.9966666666666667,
+    "f_tex": 0.36666666666666664,
+    "f_col": 0.5116666666666667,
+    "fused": 0.9966666666666667
+  },
+  "reliance_inlp": {
+    "f_cnn": {
+      "class_acc_before": 0.9966666666666667,
+      "class_acc_after_source_removal": 0.9966666666666667,
+      "class_acc_retention": 1.0,
+      "source_acc_before": 0.9924533136309757,
+      "source_acc_after": 0.5297871674063639,
+      "directions_removed": 9
+    },
+    "f_tex": {
+      "class_acc_before": 0.36666666666666664,
+      "class_acc_after_source_removal": 0.365,
+      "class_acc_retention": 0.9954545454545455,
+      "source_acc_before": 0.8082668251420514,
+      "source_acc_after": 0.6288390556637034,
+      "directions_removed": 15
+    },
+    "f_col": {
+      "class_acc_before": 0.5116666666666667,
+      "class_acc_after_source_removal": 0.4966666666666667,
+      "class_acc_retention": 0.9706840390879479,
+      "source_acc_before": 0.9133664816300092,
+      "source_acc_after": 0.6091973356121558,
+      "directions_removed": 15
+    },
+    "fused": {
+      "class_acc_before": 0.9966666666666667,
+      "class_acc_after_source_removal": 0.9966666666666667,
+      "class_acc_retention": 1.0,
+      "source_acc_before": 0.9942540236006344,
+      "source_acc_after": 0.5679419275225578,
+      "directions_removed": 15
+    }
+  },
+  "transfer": {
+    "f_cnn": {
+      "indian->ss": 0.9956421416678712,
+      "ss->indian": 1.0,
+      "indian_within": 1.0,
+      "ss_within": 0.9956521739130434,
+      "transfer_gap_ind_to_ss": 1.0032245172153509e-05,
+      "transfer_gap_ss_to_ind": 0.0
+    },
+    "f_tex": {
+      "indian->ss": 0.1498509948451197,
+      "ss->indian": 0.15894204441998558,
+      "indian_within": 0.6423529942279942,
+      "ss_within": 0.2890972934229513,
+      "transfer_gap_ind_to_ss": 0.1392462985778316,
+      "transfer_gap_ss_to_ind": 0.4834109498080086
+    },
+    "f_col": {
+      "indian->ss": 0.1139871563701063,
+      "ss->indian": 0.09493935394670688,
+      "indian_within": 0.9463988095238095,
+      "ss_within": 0.38255099210476784,
+      "transfer_gap_ind_to_ss": 0.2685638357346615,
+      "transfer_gap_ss_to_ind": 0.8514594555771027
+    },
+    "fused": {
+      "indian->ss": 0.9891863278886872,
+      "ss->indian": 1.0,
+      "indian_within": 1.0,
+      "ss_within": 0.9956521739130434,
+      "transfer_gap_ind_to_ss": 0.006465846024356181,
+      "transfer_gap_ss_to_ind": 0.0
+    }
+  },
+  "per_class": {
+    "f_cnn": {
+      "black_pepper": {
+        "balanced_acc_mean": 0.9916666666666666,
+        "balanced_acc_std": 0.016666666666666698,
+        "n_indian": 30,
+        "n_ss": 120,
+        "folds": 5
+      },
+      "cinnamon": {
+        "balanced_acc_mean": 1.0,
+        "balanced_acc_std": 0.0,
+        "n_indian": 43,
+        "n_ss": 107,
+        "folds": 5
+      },
+      "cloves": {
+        "balanced_acc_mean": 0.9928571428571429,
+        "balanced_acc_std": 0.01428571428571428,
+        "n_indian": 72,
+        "n_ss": 78,
+        "folds": 5
+      },
+      "coriander": {
+        "balanced_acc_mean": 1.0,
+        "balanced_acc_std": 0.0,
+        "n_indian": 34,
+        "n_ss": 116,
+        "folds": 5
+      },
+      "cumin": {
+        "balanced_acc_mean": 0.9857142857142858,
+        "balanced_acc_std": 0.02857142857142856,
+        "n_indian": 37,
+        "n_ss": 113,
+        "folds": 5
+      },
+      "ginger": {
+        "balanced_acc_mean": 1.0,
+        "balanced_acc_std": 0.0,
+        "n_indian": 60,
+        "n_ss": 90,
+        "folds": 5
+      },
+      "green_cardamom": {
+        "balanced_acc_mean": 0.99,
+        "balanced_acc_std": 0.020000000000000018,
+        "n_indian": 52,
+        "n_ss": 98,
+        "folds": 5
+      },
+      "nutmeg": {
+        "balanced_acc_mean": 1.0,
+        "balanced_acc_std": 0.0,
+        "n_indian": 36,
+        "n_ss": 114,
+        "folds": 5
+      }
+    },
+    "f_tex": {
+      "black_pepper": {
+        "balanced_acc_mean": 0.8958333333333334,
+        "balanced_acc_std": 0.06180165405913053,
+        "n_indian": 30,
+        "n_ss": 120,
+        "folds": 5
+      },
+      "cinnamon": {
+        "balanced_acc_mean": 0.9779761904761906,
+        "balanced_acc_std": 0.02738095238095239,
+        "n_indian": 43,
+        "n_ss": 107,
+        "folds": 5
+      },
+      "cloves": {
+        "balanced_acc_mean": 0.7620833333333333,
+        "balanced_acc_std": 0.08963653300907294,
+        "n_indian": 72,
+        "n_ss": 78,
+        "folds": 5
+      },
+      "coriander": {
+        "balanced_acc_mean": 0.7251552795031057,
+        "balanced_acc_std": 0.07567705533781323,
+        "n_indian": 34,
+        "n_ss": 116,
+        "folds": 5
+      },
+      "cumin": {
+        "balanced_acc_mean": 0.7692758328627893,
+        "balanced_acc_std": 0.06988664226611571,
+        "n_indian": 37,
+        "n_ss": 113,
+        "folds": 5
+      },
+      "ginger": {
+        "balanced_acc_mean": 0.9388888888888888,
+        "balanced_acc_std": 0.0398686113733537,
+        "n_indian": 60,
+        "n_ss": 90,
+        "folds": 5
+      },
+      "green_cardamom": {
+        "balanced_acc_mean": 0.8778468899521531,
+        "balanced_acc_std": 0.049474609673629585,
+        "n_indian": 52,
+        "n_ss": 98,
+        "folds": 5
+      },
+      "nutmeg": {
+        "balanced_acc_mean": 0.9496894409937887,
+        "balanced_acc_std": 0.05271824887931165,
+        "n_indian": 36,
+        "n_ss": 114,
+        "folds": 5
+      }
+    },
+    "f_col": {
+      "black_pepper": {
+        "balanced_acc_mean": 0.9916666666666666,
+        "balanced_acc_std": 0.016666666666666698,
+        "n_indian": 30,
+        "n_ss": 120,
+        "folds": 5
+      },
+      "cinnamon": {
+        "balanced_acc_mean": 0.9797979797979798,
+        "balanced_acc_std": 0.02494765461662317,
+        "n_indian": 43,
+        "n_ss": 107,
+        "folds": 5
+      },
+      "cloves": {
+        "balanced_acc_mean": 0.99375,
+        "balanced_acc_std": 0.012499999999999999,
+        "n_indian": 72,
+        "n_ss": 78,
+        "folds": 5
+      },
+      "coriander": {
+        "balanced_acc_mean": 0.9770186335403727,
+        "balanced_acc_std": 0.026101740856460477,
+        "n_indian": 34,
+        "n_ss": 116,
+        "folds": 5
+      },
+      "cumin": {
+        "balanced_acc_mean": 0.9954545454545455,
+        "balanced_acc_std": 0.009090909090909084,
+        "n_indian": 37,
+        "n_ss": 113,
+        "folds": 5
+      },
+      "ginger": {
+        "balanced_acc_mean": 0.975,
+        "balanced_acc_std": 0.03767961101736264,
+        "n_indian": 60,
+        "n_ss": 90,
+        "folds": 5
+      },
+      "green_cardamom": {
+        "balanced_acc_mean": 0.9809090909090908,
+        "balanced_acc_std": 0.017284684856210486,
+        "n_indian": 52,
+        "n_ss": 98,
+        "folds": 5
+      },
+      "nutmeg": {
+        "balanced_acc_mean": 0.9956521739130434,
+        "balanced_acc_std": 0.008695652173913038,
+        "n_indian": 36,
+        "n_ss": 114,
+        "folds": 5
+      }
+    },
+    "fused": {
+      "black_pepper": {
+        "balanced_acc_mean": 1.0,
+        "balanced_acc_std": 0.0,
+        "n_indian": 30,
+        "n_ss": 120,
+        "folds": 5
+      },
+      "cinnamon": {
+        "balanced_acc_mean": 0.9954545454545455,
+        "balanced_acc_std": 0.009090909090909084,
+        "n_indian": 43,
+        "n_ss": 107,
+        "folds": 5
+      },
+      "cloves": {
+        "balanced_acc_mean": 0.9928571428571429,
+        "balanced_acc_std": 0.01428571428571428,
+        "n_indian": 72,
+        "n_ss": 78,
+        "folds": 5
+      },
+      "coriander": {
+        "balanced_acc_mean": 1.0,
+        "balanced_acc_std": 0.0,
+        "n_indian": 34,
+        "n_ss": 116,
+        "folds": 5
+      },
+      "cumin": {
+        "balanced_acc_mean": 1.0,
+        "balanced_acc_std": 0.0,
+        "n_indian": 37,
+        "n_ss": 113,
+        "folds": 5
+      },
+      "ginger": {
+        "balanced_acc_mean": 1.0,
+        "balanced_acc_std": 0.0,
+        "n_indian": 60,
+        "n_ss": 90,
+        "folds": 5
+      },
+      "green_cardamom": {
+        "balanced_acc_mean": 1.0,
+        "balanced_acc_std": 0.0,
+        "n_indian": 52,
+        "n_ss": 98,
+        "folds": 5
+      },
+      "nutmeg": {
+        "balanced_acc_mean": 1.0,
+        "balanced_acc_std": 0.0,
+        "n_indian": 36,
+        "n_ss": 114,
+        "folds": 5
+      }
+    }
+  }
+}

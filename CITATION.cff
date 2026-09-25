@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this code or the SpiceNet manifests, please cite the paper below."
+title: "SpiceNet: Quantifying and Narrowing the Acquisition-Transfer Gap in Image-Based Spice Identification"
+type: software
+license: MIT
+authors:
+  - family-names: Ramim
+    given-names: Md. Noushad Jahan
+    affiliation: University of Asia Pacific
+    email: contactwithnoushad@gmail.com
+  - family-names: Sameha
+    given-names: Maisha
+    affiliation: University of Asia Pacific
+  - family-names: Nahid
+    given-names: Nazmun
+    affiliation: University of Asia Pacific
+identifiers:
+  - type: doi
+    value: 10.57967/hf/9655
+    description: SpiceNet manifests, splits and checkpoints (Hugging Face Hub)
+keywords:
+  - spice identification
+  - domain shift
+  - shortcut learning
+  - food quality control
+  - computer vision

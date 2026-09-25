@@ -1,0 +1,167 @@
+{
+  "ss": {
+    "ss": {
+      "n": 1144,
+      "acc": 0.9965034965034965,
+      "per_class": {
+        "black_pepper": {
+          "n": 137,
+          "acc": 1.0
+        },
+        "cinnamon": {
+          "n": 154,
+          "acc": 1.0
+        },
+        "cloves": {
+          "n": 143,
+          "acc": 1.0
+        },
+        "coriander": {
+          "n": 147,
+          "acc": 0.9863945578231292
+        },
+        "cumin": {
+          "n": 153,
+          "acc": 0.9934640522875817
+        },
+        "ginger": {
+          "n": 137,
+          "acc": 1.0
+        },
+        "green_cardamom": {
+          "n": 136,
+          "acc": 1.0
+        },
+        "nutmeg": {
+          "n": 137,
+          "acc": 0.9927007299270073
+        }
+      }
+    },
+    "in": {
+      "n": 434,
+      "acc": 0.988479262672811,
+      "per_class": {
+        "black_pepper": {
+          "n": 34,
+          "acc": 1.0
+        },
+        "cinnamon": {
+          "n": 47,
+          "acc": 1.0
+        },
+        "cloves": {
+          "n": 103,
+          "acc": 0.9902912621359223
+        },
+        "coriander": {
+          "n": 42,
+          "acc": 0.9761904761904762
+        },
+        "cumin": {
+          "n": 36,
+          "acc": 1.0
+        },
+        "ginger": {
+          "n": 78,
+          "acc": 0.9615384615384616
+        },
+        "green_cardamom": {
+          "n": 57,
+          "acc": 1.0
+        },
+        "nutmeg": {
+          "n": 37,
+          "acc": 1.0
+        }
+      }
+    }
+  },
+  "in": {
+    "ss": {
+      "n": 1144,
+      "acc": 0.6118881118881119,
+      "per_class": {
+        "black_pepper": {
+          "n": 137,
+          "acc": 0.40875912408759124
+        },
+        "cinnamon": {
+          "n": 154,
+          "acc": 0.8051948051948052
+        },
+        "cloves": {
+          "n": 143,
+          "acc": 0.6433566433566433
+        },
+        "coriander": {
+          "n": 147,
+          "acc": 0.07482993197278912
+        },
+        "cumin": {
+          "n": 153,
+          "acc": 0.6078431372549019
+        },
+        "ginger": {
+          "n": 137,
+          "acc": 0.9562043795620438
+        },
+        "green_cardamom": {
+          "n": 136,
+          "acc": 0.5441176470588235
+        },
+        "nutmeg": {
+          "n": 137,
+          "acc": 0.8686131386861314
+        }
+      }
+    },
+    "in": {
+      "n": 434,
+      "acc": 1.0,
+      "per_class": {
+        "black_pepper": {
+          "n": 34,
+          "acc": 1.0
+        },
+        "cinnamon": {
+          "n": 47,
+          "acc": 1.0
+        },
+        "cloves": {
+          "n": 103,
+          "acc": 1.0
+        },
+        "coriander": {
+          "n": 42,
+          "acc": 1.0
+        },
+        "cumin": {
+          "n": 36,
+          "acc": 1.0
+        },
+        "ginger": {
+          "n": 78,
+          "acc": 1.0
+        },
+        "green_cardamom": {
+          "n": 57,
+          "acc": 1.0
+        },
+        "nutmeg": {
+          "n": 37,
+          "acc": 1.0
+        }
+      }
+    }
+  },
+  "analysis": {
+    "ss_trained_within_source": 0.9965034965034965,
+    "ss_trained_cross_source": 0.988479262672811,
+    "ss_shortcut_tax_pp": 0.8,
+    "in_trained_within_source": 1.0,
+    "in_trained_cross_source": 0.6118881118881119,
+    "in_shortcut_tax_pp": 38.81,
+    "avg_shortcut_tax_pp": 19.81
+  }
+}

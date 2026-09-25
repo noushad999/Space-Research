@@ -1,0 +1,137 @@
+{
+  "n_seeds": 3,
+  "per_seed": [
+    {
+      "file": "outputs/shortcut_test_matrix_matched_s42.json",
+      "ss_within": 0.9909688013136289,
+      "ss_cross": 0.9874326750448833,
+      "in_within": 1.0,
+      "in_cross": 0.6247947454844006,
+      "ss_tax_pp": 0.35,
+      "in_tax_pp": 37.52
+    },
+    {
+      "file": "outputs/shortcut_test_matrix_matched_s1337.json",
+      "ss_within": 0.9926108374384236,
+      "ss_cross": 0.9856373429084381,
+      "in_within": 1.0,
+      "in_cross": 0.6297208538587848,
+      "ss_tax_pp": 0.7,
+      "in_tax_pp": 37.03
+    },
+    {
+      "file": "outputs/shortcut_test_matrix_matched_s2024.json",
+      "ss_within": 0.9893267651888341,
+      "ss_cross": 0.9802513464991023,
+      "in_within": 1.0,
+      "in_cross": 0.6124794745484401,
+      "ss_tax_pp": 0.91,
+      "in_tax_pp": 38.75
+    }
+  ],
+  "aggregate": {
+    "ss_within": {
+      "mean": 0.9909688013136289,
+      "std": 0.0016420361247947435,
+      "min": 0.9893267651888341,
+      "max": 0.9926108374384236,
+      "n": 3,
+      "values": [
+        0.9909688013136289,
+        0.9926108374384236,
+        0.9893267651888341
+      ]
+    },
+    "ss_cross": {
+      "mean": 0.9844404548174746,
+      "std": 0.0037372818661869827,
+      "min": 0.9802513464991023,
+      "max": 0.9874326750448833,
+      "n": 3,
+      "values": [
+        0.9874326750448833,
+        0.9856373429084381,
+        0.9802513464991023
+      ]
+    },
+    "in_within": {
+      "mean": 1.0,
+      "std": 0.0,
+      "min": 1.0,
+      "max": 1.0,
+      "n": 3,
+      "values": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "in_cross": {
+      "mean": 0.6223316912972084,
+      "std": 0.00888066816616742,
+      "min": 0.6124794745484401,
+      "max": 0.6297208538587848,
+      "n": 3,
+      "values": [
+        0.6247947454844006,
+        0.6297208538587848,
+        0.6124794745484401
+      ]
+    },
+    "ss_tax_pp": {
+      "mean": 0.6533333333333333,
+      "std": 0.2829016319029167,
+      "min": 0.35,
+      "max": 0.91,
+      "n": 3,
+      "values": [
+        0.35,
+        0.7,
+        0.91
+      ]
+    },
+    "in_tax_pp": {
+      "mean": 37.76666666666667,
+      "std": 0.8861339251678223,
+      "min": 37.03,
+      "max": 38.75,
+      "n": 3,
+      "values": [
+        37.52,
+        37.03,
+        38.75
+      ]
+    }
+  },
+  "mcnemar_per_seed": [
+    {
+      "file": "outputs/shortcut_test_matrix_matched_s42.json",
+      "p_value": 1.4568436039366115e-98,
+      "chi2": 444.00224215246635,
+      "b": 446,
+      "c": 0
+    },
+    {
+      "file": "outputs/shortcut_test_matrix_matched_s1337.json",
+      "p_value": 2.9195363658380846e-97,
+      "chi2": 438.02027027027026,
+      "b": 443,
+      "c": 1
+    },
+    {
+      "file": "outputs/shortcut_test_matrix_matched_s2024.json",
+      "p_value": 1.5613007006335285e-100,
+      "chi2": 453.05399568034557,
+      "b": 461,
+      "c": 2
+    }
+  ],
+  "mcnemar_pooled": {
+    "b_ss_right_in_wrong": 1350,
+    "c_ss_wrong_in_right": 3,
+    "chi2": 1339.0362158167036,
+    "p_value": 3.717066840517538e-293,
+    "n_discordant": 1353,
+    "n_seeds_pooled": 3
+  }
+}
